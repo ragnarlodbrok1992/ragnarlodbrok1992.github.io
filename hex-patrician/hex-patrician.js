@@ -36,16 +36,29 @@ class Hex {
 
   // Let's render this badboi
   render(ctx) {
-    // Test render <--- this works - I am passing by reference!
-    // ctx.fillStyle = 'rgba(255, 255, 0, 0.7)';
-    // ctx.fillRect(100, 100, 20, 20);
-
     // Render hex lines
     for (let i = 0; i < 5; i++) {
-
+      ctx.beginPath();
+      ctx.moveTo(this.corner_points[i].x, this.corner_points[i].y);
+      ctx.lineTo(this.corner_points[i + 1].x, this.corner_points[i + 1].y);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+      ctx.stroke();
     }
     // Last line - different order
+    ctx.beginPath();
+    ctx.moveTo(this.corner_points[5].x, this.corner_points[5].y);
+    ctx.lineTo(this.corner_points[0].x, this.corner_points[0].y);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+    ctx.stroke();
+  }
+}
 
+// HexMap container in a class
+class HexMap {
+  constructor(x, y) {
+    this.hexes = new Array();
+    this.x = x;
+    this.y = y;
   }
 }
 
@@ -58,17 +71,11 @@ class Hex {
   // TODO(ragnar): If we can't get canvas - gracefully spadnij z rowerka
 
   // Create all required classes and stuff
-  let test_hex = new Hex(new Point(20, 20), 20);
+  let test_hex = new Hex(new Point(100, 100), 20);
   
   // Testing creation of hex
   console.log(flat_hex_corner(new Point(test_hex.x, test_hex.y), test_hex.size, 0));
   console.log(flat_hex_corner(new Point(test_hex.x, test_hex.y), test_hex.size, 1));
   console.log(test_hex.corner_points);
   test_hex.render(context2d);
-    
-  // Let's put some pixels on canvas
-  context2d.fillStyle = 'rgba(200, 0, 0, 0.5)';
-  context2d.fillRect(10, 10, 50, 50);
-
-
 })();
