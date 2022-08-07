@@ -55,10 +55,31 @@ class Hex {
 
 // HexMap container in a class
 class HexMap {
-  constructor(x, y) {
+  constructor(x, y, x_size, y_size, hex_size) {
     this.hexes = new Array();
     this.x = x;
     this.y = y;
+
+    // Variables for hexmap - hex width, height, etc
+    this.width_flat = 2 * hex_size;
+    this.height_flat = Math.sqrt(3) * hex_size;
+
+    for (let i = 0; i < x_size; i++) {
+      for (let j = 0; j < y_size; j++) {
+        let x = (3 / 4) * this.width_flat * i;
+        let y = this.height_flat * j + ((1 / 2) * this.height_flat * (i % 2));
+        this.hexes.push(new Hex(new Point(this.x + x, this.y + y), hex_size));
+      }
+    }
+  }
+
+  render(ctx) {
+    console.log("Rendering hex map!");
+
+    // TODO(ragnar): Add some rendering
+    for (const hex of this.hexes) {
+      hex.render(ctx);
+    }
   }
 }
 
@@ -71,11 +92,14 @@ class HexMap {
   // TODO(ragnar): If we can't get canvas - gracefully spadnij z rowerka
 
   // Create all required classes and stuff
-  let test_hex = new Hex(new Point(100, 100), 20);
-  
+  // let test_hex = new Hex(new Point(100, 100), 20);
+
+  let hex_map = new HexMap(20, 20, 10, 10, 10);
+  hex_map.render(context2d);
+
   // Testing creation of hex
-  console.log(flat_hex_corner(new Point(test_hex.x, test_hex.y), test_hex.size, 0));
-  console.log(flat_hex_corner(new Point(test_hex.x, test_hex.y), test_hex.size, 1));
-  console.log(test_hex.corner_points);
-  test_hex.render(context2d);
+  // console.log(flat_hex_corner(new Point(test_hex.x, test_hex.y), test_hex.size, 0));
+  // console.log(flat_hex_corner(new Point(test_hex.x, test_hex.y), test_hex.size, 1));
+  // console.log(test_hex.corner_points);
+  // test_hex.render(context2d);
 })();
