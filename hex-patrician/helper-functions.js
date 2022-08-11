@@ -13,3 +13,11 @@ export function render_canvas_outlier(ctx, canvas_width, canvas_height) {
   ctx.lineTo(0, 0);
   ctx.stroke();
 }
+
+export function render_rect(ctx, pos_x, pos_y, size_x, size_y, fill_style) {
+  // Setting up fill style
+  ctx.fillStyle = fill_style;
+
+  // Drawing rectangle
+  ctx.fillRect(pos_x, pos_y, size_x, size_y);
+}

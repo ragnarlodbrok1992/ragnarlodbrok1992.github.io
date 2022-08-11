@@ -3,6 +3,9 @@ import * as canvasConsole from "./canvas-console.js";
 
 console.log("This is Hex Patrician game - alpha version.");
 
+// DEBUG
+var DEBUG = false;
+
 // Engine variables - camera
 var camera_x = 0;
 var camera_y = 0;
@@ -147,7 +150,7 @@ function onMouseMove(event) {
 
   // TODO(ragnar): If we can't get canvas - gracefully spadnij z rowerka
 
-  let hex_map = new HexMap(20, 20, 47, 16, 20);
+  let hex_map = new HexMap(20, 20, 48, 17, 20);
 
   // TODO(ragnar): finally adding render loop
 
@@ -164,7 +167,7 @@ function onMouseMove(event) {
 
     // Then render stuff
     hex_map.render(context2d, camera_x, camera_y);
-    helper.render_canvas_outlier(context2d, canvas_width, canvas_height);
+    if (DEBUG) helper.render_canvas_outlier(context2d, canvas_width, canvas_height);
 
     window.requestAnimationFrame(step);
 
