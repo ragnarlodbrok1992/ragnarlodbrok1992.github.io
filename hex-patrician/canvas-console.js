@@ -74,6 +74,9 @@ function get_char_by_cursor_index(crs_index, buffer) {
 function onClick() {
     // Focus on clicked canvas
     consoleFocused = true;
+
+    // Move cursor to the front
+    cursor_render_index = console_buffer.length;
 }
 
 function onKeyDown(event) {
@@ -96,8 +99,28 @@ function onKeyDown(event) {
             }
             cursor_render_index += 1;
             return;
+        // Cover rest of keys
+        // Backspace
+        case "Backspace":
+            console.log("Pressed backspace");
+            return;
+        // Space
+        case "Space":
+            console.log("Pressed space");
+            return;
     }
-    // Cover rest of keys
+}
+
+function onKeyPressed(event) {
+    console.log(event);
+    if (!consoleFocused) return;
+
+    // Handle alphanumerics
+    if ((event.keyCode >= 48 && event.keyCode <= 57) ||
+        (event.keyCode >= 65 && event.keyCode <= 90) ||
+        (event.keyCode >= 97 && event.keyCode <= 122)) {
+            console.log("Pressed: ", String.fromCharCode(event.keyCode));
+        }
 }
 
 (() => {
@@ -152,4 +175,5 @@ function onKeyDown(event) {
     consoleCanvas.addEventListener('click', onClick, false);
 
     document.addEventListener('keydown', onKeyDown, false);
+    document.addEventListener('keypress', onKeyPressed, false);
 })();
