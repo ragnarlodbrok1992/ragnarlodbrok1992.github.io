@@ -8,6 +8,8 @@ var DEBUG = false;
 export var consoleMem = new Array();
 export var times_clicked = 0;
 export var consoleFocused = false;
+export var prompt_default = ": > ";
+var prompt_set = false;
 
 // Consts
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -23,8 +25,19 @@ var console_x = cursor_x;
 var console_y = cursor_y + cursor_size_y;
 var cursor_fill_style = 'DarkGreen';
 
+// Control keys booleans
+var ctrl_pressed = false;
+var shift_pressed = false;
+var alt_pressed = false;
+
 // Console buffers
 var console_buffer = new Array();
+
+export function setPrompt(value) {
+    console.log("Setting prompt");
+    prompt = value + prompt_default;
+    prompt_set = true;
+}
 
 export function setConsoleFocused(value) {
     consoleFocused = value;
@@ -82,18 +95,32 @@ function onClick() {
 function onKeyDown(event) {
     if (!consoleFocused) return;
     // console.log("Pressed key on console: ", event);
+
+    // Somehow get boolean values of pressed ctrl/shift/alt keys
+    switch (event.key) {
+        case "Control":
+            ctrl_pressed = true;
+            return;
+        case "Alt":
+            alt_pressed = true;
+            return;
+        case "Shift":
+            shift_pressed = true;
+            return;
+    }
+
     switch (event.key) {
         case "ArrowLeft":
-            console.log("Pressed left arrow!");
-            // Move cursor left
+            // Check if somone pressed CTRL before
+            if (ctrl_pressed) console.log("Moving left with ctrl!");
             if (cursor_render_index <= cursor_prompt_stop) {
                 return;
             }
             cursor_render_index -= 1;
             return;
         case "ArrowRight":
-            console.log("Pressed right arrow!");
-            // Move cursor right
+            // Check if somone pressed CTRL before
+            if (ctrl_pressed) console.log("Moving right with ctrl!");
             if (cursor_render_index >= console_buffer.length) {
                 return;
             }
@@ -102,25 +129,61 @@ function onKeyDown(event) {
         // Cover rest of keys
         // Backspace
         case "Backspace":
-            console.log("Pressed backspace");
+            if (cursor_render_index <= cursor_prompt_stop) return;
+            console_buffer.splice(cursor_render_index - 1, 1);
+            cursor_render_index -= 1;
             return;
         // Space
-        case "Space":
-            console.log("Pressed space");
+        case " ":
+            // Add space character before
+            console_buffer.splice(cursor_render_index, 0, ' ');
+            cursor_render_index += 1;
+            return;
+        // Delete
+        case "Delete":
+            if (cursor_render_index >= console_buffer.length) return;
+            console_buffer.splice(cursor_render_index, 1);
+            return;
+        // Home
+        case "Home":
+            cursor_render_index = cursor_prompt_stop;
+            return;
+        // End
+        case "End":
+            cursor_render_index = console_buffer.length;
             return;
     }
 }
 
 function onKeyPressed(event) {
-    console.log(event);
+    // console.log(event);
     if (!consoleFocused) return;
 
     // Handle alphanumerics
     if ((event.keyCode >= 48 && event.keyCode <= 57) ||
         (event.keyCode >= 65 && event.keyCode <= 90) ||
         (event.keyCode >= 97 && event.keyCode <= 122)) {
-            console.log("Pressed: ", String.fromCharCode(event.keyCode));
+            // console.log("Pressed: ", String.fromCharCode(event.keyCode));
+
+            // Add character to console buffer
+            console_buffer.splice(cursor_render_index, 0, String.fromCharCode(event.keyCode));
+            cursor_render_index += 1;
         }
+}
+
+function onKeyUp(event) {
+    // console.log("Key has gone up! ", event);
+    switch (event.key) {
+        case "Control":
+            ctrl_pressed = false;
+            return;
+        case "Alt":
+            alt_pressed = false;
+            return;
+        case "Shift":
+            shift_pressed = false;
+            return;
+    }
 }
 
 (() => {
@@ -133,9 +196,6 @@ function onKeyPressed(event) {
     let flicker = false;
     let char_counter = 0;
 
-    // Before rendering - prepare prompt
-    write_prompt(context2d, "patrician-hex-debug-console: > ");
-
     // Render loop for console
     let start;
     function step(timestamp) {
@@ -144,6 +204,12 @@ function onKeyPressed(event) {
         }
         const dt = (timestamp - start) * 0.001;
         start = timestamp;
+
+        // Setting prompt with boolean guard
+        if (prompt_set) {
+            write_prompt(context2d, prompt);
+            prompt_set = false;
+        }
 
         // Clearing all canvas
         context2d.clearRect(0, 0, canvas_width, canvas_height);
@@ -155,13 +221,6 @@ function onKeyPressed(event) {
         if (!flicker && timestamp % 1000 > 500) flicker = !flicker;
         else if (flicker  && timestamp % 1000 < 500) flicker = !flicker;
         if (flicker) calculate_cursor_x_and_render(context2d, cursor_render_index, console_buffer);
-
-        // Random char to test console
-        if (char_counter < 30) {
-            const r = characters.charAt((Math.random() * characters.length).toFixed(0)); 
-            write_char(context2d, r);
-            char_counter += 1;
-        }
 
         // Rendering console buffer
         render_console_buffer(context2d, console_buffer);
@@ -176,4 +235,5 @@ function onKeyPressed(event) {
 
     document.addEventListener('keydown', onKeyDown, false);
     document.addEventListener('keypress', onKeyPressed, false);
+    document.addEventListener('keyup', onKeyUp, false);
 })();

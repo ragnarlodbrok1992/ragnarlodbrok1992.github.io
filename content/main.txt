@@ -1,0 +1,9 @@
+Hello, sailor!
+This is personal site of Maciej Oliwa.
+C/C++ and other languages developer and passionate learner.
+Here you can check my work, check my CV,
+contact me and read some stuff I thought was important to write.
+
+here is a also game I am developing,
+Hex Patrician which is a spiritual successor to the Patrician series.
+You can check it out here (check the sidebar).

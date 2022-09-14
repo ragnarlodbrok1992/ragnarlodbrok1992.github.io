@@ -1,5 +1,5 @@
-import * as helper from "./helper-functions.js";
-import * as canvasConsole from "./canvas-console.js";
+import * as helper from "../canvas-console/helper-functions.js";
+import * as canvasConsole from "../canvas-console/canvas-console.js";
 
 console.log("This is Hex Patrician game - alpha version.");
 
@@ -142,6 +142,9 @@ function onMouseMove(event) {
 
 // Sort of main of javascript file
 (() => {
+  // Set prompt for console
+  canvasConsole.setPrompt("hex-patrician-debug-console");
+
   // Getting HTML canvas
   var mainCanvas = document.getElementById('main-canvas');
   var context2d = mainCanvas.getContext('2d');
