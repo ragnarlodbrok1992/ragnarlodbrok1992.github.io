@@ -143,7 +143,7 @@ function onMouseMove(event) {
 // Sort of main of javascript file
 (() => {
   // Set prompt for console
-  canvasConsole.setPrompt("hex-patrician-debug-console");
+  canvasConsole.set_prompt("hex-patrician-debug-console");
 
   // Getting HTML canvas
   var mainCanvas = document.getElementById('main-canvas');

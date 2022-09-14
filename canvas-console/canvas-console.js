@@ -31,9 +31,10 @@ var shift_pressed = false;
 var alt_pressed = false;
 
 // Console buffers
+var console_buffer_line = new Array();
 var console_buffer = new Array();
 
-export function setPrompt(value) {
+export function set_prompt(value) {
     console.log("Setting prompt");
     prompt = value + prompt_default;
     prompt_set = true;
@@ -47,11 +48,16 @@ function write_char(ctx, char) {
     ctx.font = "12px Courier New";
 
     // Move cursor after writing text
+    // Check if character is newline
+    if (char == "\n") {
+        console.log("Found new line in string to render");
+        // console_y += cursor_size_y;
+    }
     console_buffer.push(char);
     cursor_render_index += 1;
 }
 
-function write_string(ctx, string) {
+export function write_string(ctx, string) {
     for (var i = 0; i < string.length; i++) {
         write_char(ctx, string.charAt(i));
     }
@@ -71,12 +77,15 @@ function render_console_buffer(ctx, buffer) {
 function calculate_cursor_x_and_render(ctx, cursor_render_index, buffer) {
     var text_before_cursor = 0;
     var cursor_x_local = cursor_x;
+    var cursor_y_local = cursor_y;
     if (cursor_render_index != 0) {
         text_before_cursor = ctx.measureText(buffer.slice(-cursor_render_index).join(""));
         cursor_x_local += text_before_cursor.width;
     }
     // After all - render cursor
-    helper.render_rect(ctx, cursor_x_local, cursor_y, cursor_size_x, cursor_size_y, cursor_fill_style);
+    helper.render_rect(ctx,
+        cursor_x_local, cursor_y_local,
+        cursor_size_x, cursor_size_y, cursor_fill_style);
 }
 
 function get_char_by_cursor_index(crs_index, buffer) {
