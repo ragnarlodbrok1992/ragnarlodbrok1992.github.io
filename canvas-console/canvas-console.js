@@ -35,7 +35,6 @@ var console_buffer_line = new Array();
 var console_buffer = new Array();
 
 export function set_prompt(value) {
-    console.log("Setting prompt");
     prompt = value + prompt_default;
     prompt_set = true;
 }
@@ -58,9 +57,11 @@ function write_char(ctx, char) {
 }
 
 export function write_string(ctx, string) {
-    for (var i = 0; i < string.length; i++) {
-        write_char(ctx, string.charAt(i));
-    }
+    // return new Promise((resolve) => {
+        for (var i = 0; i < string.length; i++) {
+            write_char(ctx, string.charAt(i));
+        }
+    // });
 }
 
 function write_prompt(ctx, prompt) {

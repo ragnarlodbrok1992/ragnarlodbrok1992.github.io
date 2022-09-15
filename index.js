@@ -4,28 +4,42 @@ import * as canvasConsole from "./canvas-console/canvas-console.js";
 // Global variables
 const main_content_file = './content/main.txt';
 
-// Global functions
-async function get_text(file) {
-    let myObject = await fetch(file);
-    let myText = await myObject.text();
-    return myText;
+async function get_string_from_file(file) {
+    const x = fetch(file)
+                .then((response) => {
+                    return response.text();
+                }).then((string) => {
+                    return string;
+                });
+    return x;
 }
 
+async function set_prompt(prompt) {
+    return new Promise((resolve) => {
+        canvasConsole.set_prompt(prompt);
+    });
+}
+
+// async function write_string(context, string) {
+    
+// }
+
 // Sort of main of javascript file
-(() => {
+(async () => {
     // Main
     var consoleCanvas = document.getElementById('console-canvas');
     var context2d = consoleCanvas.getContext('2d');
-    canvasConsole.set_prompt("main");
 
+    console.log("Before setting prompt");
+    await set_prompt("main");
 
-    // Load and write content
-    // main_content = loadFile('./content/main.txt').value;
-    var main_content = get_text(main_content_file);
-    main_content.then(data => {
-        // Write data to canvasConsole
-        // FIXME(ragnar): This code has races - sometimes prompt is rendered before this test line
-        canvasConsole.write_string(context2d, "Test data\n Twoja stara\nNowa Linia\nOstatnia linia");
-    });
+    console.log("After setting prompt");
+
+    const data = await get_string_from_file(main_content_file);
+
+    console.log("Before writing string");
+    canvasConsole.write_string(context2d, data);
+
+    console.log("After writing string");
 
 })();
