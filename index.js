@@ -15,17 +15,12 @@ const main_content_file = './content/main.txt';
             var consoleCanvas = document.getElementById('console-canvas');
             var context2d = consoleCanvas.getContext('2d');
             
-            // DEBUG - got string?
-            console.log("I got string from file here: ", string);
-
-            // Write string of site
-            console.log("Before writing string");
-            canvasConsole.write_string(context2d, string);
-            console.log("After writing string");
+            // TODO: for now we render debug context for multiline rendering
+            // This stuff here is disabled
+            // Write information about site inside console context
+            // canvasConsole.write_string(context2d, string);
 
             // Write prompt after
-            console.log("Before setting prompt");
-            canvasConsole.set_prompt("main");
-            console.log("After setting prompt");
+            // canvasConsole.set_prompt("main");
         });
 })();

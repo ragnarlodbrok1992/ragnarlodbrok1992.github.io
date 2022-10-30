@@ -31,6 +31,10 @@ var shift_pressed = false;
 var alt_pressed = false;
 
 // Console buffers
+// TODO: added line selecting number
+var line_selected = 0; // Starting from top most line - first one
+// TODO: some lines will not be rendered with prompt first - like response from commands
+var rendering_with_prompt = false;
 var console_buffer_line = new Array();
 var console_buffer = new Array();
 
@@ -47,35 +51,48 @@ function write_char(ctx, char) {
     ctx.font = "12px Courier New";
 
     // Move cursor after writing text
-    // Check if character is newline
+    // TODO: Check if character is newline and add logic to write in a new line inside console context
+    // TODO: if new line is encountered - prepare a new line inside buffer
+    // TODO: buffer lines must be selectable - maybe as an array index?
     if (char == "\n") {
         console.log("Found new line in string to render");
-        // console_y += cursor_size_y;
     }
     console_buffer.push(char);
     cursor_render_index += 1;
+
+    // DEBUG
+    // console.log("Cursor x local: ", cursor_x_local);
+    // console.log("Cursor y local: ", cursor_y_local);
+    console.log("Cursor render index: ", cursor_render_index);
 }
 
 export function write_string(ctx, string) {
-    // return new Promise((resolve) => {
         for (var i = 0; i < string.length; i++) {
             write_char(ctx, string.charAt(i));
         }
-    // });
 }
 
 function write_prompt(ctx, prompt) {
+    // TODO: depends on rendering line - some lines require prompt to be rendered first others dont
+    // TODO: should prompt be inside a buffer or not?
     write_string(ctx, prompt);
     cursor_prompt_stop = prompt.length;
 }
 
 function render_console_buffer(ctx, buffer) {
+
+    // TODO: render line by line
+    // TODO: choose monospaces font
+    // TODO: render preprepared buffer for now
+    // TODO: disable rendering of cursor for now
     ctx.font = "12px Courier New";
     let console_line = buffer.join("");
     ctx.fillText(console_line, console_x, console_y);
 }
 
 function calculate_cursor_x_and_render(ctx, cursor_render_index, buffer) {
+    // TODO: Also we need to calculate cursor y when rendering multiline
+    // TODO: Also do not render cursor when console is inactive
     var text_before_cursor = 0;
     var cursor_x_local = cursor_x;
     var cursor_y_local = cursor_y;
@@ -84,6 +101,7 @@ function calculate_cursor_x_and_render(ctx, cursor_render_index, buffer) {
         cursor_x_local += text_before_cursor.width;
     }
     // After all - render cursor
+
     helper.render_rect(ctx,
         cursor_x_local, cursor_y_local,
         cursor_size_x, cursor_size_y, cursor_fill_style);
@@ -99,6 +117,8 @@ function onClick() {
     consoleFocused = true;
 
     // Move cursor to the front
+    // TOOD: move cursor to the front of a current active line - which will be the last one
+    // after getting console active
     cursor_render_index = console_buffer.length;
 }
 
@@ -176,6 +196,8 @@ function onKeyPressed(event) {
             // console.log("Pressed: ", String.fromCharCode(event.keyCode));
 
             // Add character to console buffer
+            // TODO: This should add char to currently focused line
+            // TODO: There should be a mechanism that makes only the last line editable - if allowing for multiline command input - maybe not for now
             console_buffer.splice(cursor_render_index, 0, String.fromCharCode(event.keyCode));
             cursor_render_index += 1;
         }
