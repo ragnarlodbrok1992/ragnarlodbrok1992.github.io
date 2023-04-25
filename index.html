@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Maciej "Ragnar" Oliwa personal site.</title>
-    </head>
-    <body>
-      <p>Under construction</p>
 
-      <!-- Scripts should be lodaded at the end -->
-      <script type="module" src="index.js"></script>
-    </body>
+  <!-- Code taken from: https://github.com/Apthox/Javascript-Terminal -->
+  <!-- Using it with minor (or major) tweaks. -->
+  
+<head>
+    <link rel="stylesheet" href="css/terminal.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+</head>
+
+<body>
+    <div id="screen">
+        <div id="Container">
+            <div id="input">
+                <p id="input_title"></p>
+                <input id="input_source" type="command" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus>
+            </div>
+            <div id="logger">
+                <div id="wrapper">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="terminal.js"></script>
+    <script src="commands.js"></script>
+</body>
+
 </html>
