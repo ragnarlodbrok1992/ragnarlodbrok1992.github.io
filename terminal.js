@@ -1,3 +1,7 @@
+var current_block;
+var registry = new Map();
+
+
 function smart_split(input, del, empty_space) {
     if (input.length === 0) return input;
     var outputs = [""];
@@ -38,12 +42,12 @@ function smart_split(input, del, empty_space) {
     return outputs;
 }
 
+
 function update_user_title(title) {
     terminal_user_title = title;
     document.getElementById("input_title").innerText = terminal_user_title + " > ";
 }
 
-var current_block;
 
 function new_block() {
     var wrapper = document.getElementById('wrapper');
@@ -52,9 +56,11 @@ function new_block() {
     wrapper.appendChild(current_block);
 }
 
+
 function block_log(message) {
     current_block.innerHTML += "<p>" + message + "</p>";
 }
+
 
 function log(message) {
     var wrapper = document.getElementById('wrapper');
@@ -62,11 +68,10 @@ function log(message) {
 }
 
 
-var registry = new Map();
-
 function register_cmd(cmd_name, func) {
     registry.set(cmd_name.toString().toUpperCase(), func);
 }
+
 
 function submit_command() {
     event.preventDefault();
