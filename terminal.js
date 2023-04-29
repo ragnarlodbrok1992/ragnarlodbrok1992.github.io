@@ -134,5 +134,10 @@ function submit_command() {
     block_log("Help!");
   });
 
+  register_cmd("lidolka", function(cmd) {
+    block_log("Badzio kocham mojom lidolke!");
+    block_log(":* :* :* :* :*");
+  });
+
 })();
 
