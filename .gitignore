@@ -1,3 +1,11 @@
+# Vim stuff
 *~
 *.swp
 temp/
+
+# Ctags
+tags
+
+# Personal stuff
+notes/
+
