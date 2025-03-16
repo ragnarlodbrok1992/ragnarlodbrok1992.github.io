@@ -14,6 +14,3 @@ node_modules/
 package.json
 package-lock.json
 
-# Babel stuff
-*.jsx
-
