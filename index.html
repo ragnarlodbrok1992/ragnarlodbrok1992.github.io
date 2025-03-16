@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Ragnar Lodbrok site.</title>
+  </head>
+
+  <body>
+    <!-- Getting JS garbage -->
+    <!-- <script>src='https://unpkg.com/umd-react/dist/react.production.min.js'</script>
+    <script>src='https://unpkg.com/umd-react/dist/react-dom.production.min.js'</script> -->
+
+    <!--
+    <script type="module">
+      // import React from "https://esm.sh/react@19/?dev";
+      // import ReactDOMClient from "https://esm.sh/react-dom@19/client?dev";
+      export * from "https://esm.sh/react@19/?dev";
+      export { default } from "https://esm.sh/react@19/?dev";
+
+      export * from "https://esm.sh/react-dom@19/client?dev";
+      export { default } from "https://esm.sh/react-dom@19/client?dev";
+    </script> -->
+
+    <script src="./react.production.min.js"></script>
+    <script src="./react-dom.production.min.js"></script>
+
+    <script src='./RagnarSite.js'></script>
+
+    <div id='app'></div>
+
+    <!-- React "main" function -->
+    <script>
+      const root = ReactDOM.createRoot(document.getElementById('app'));
+      root.render(MyApp());
+    </script>
+
+  </body>
+</html>
